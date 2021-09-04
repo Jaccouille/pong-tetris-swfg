@@ -1,6 +1,6 @@
 extends Node
 
-var ball_scene = load("res://ball.tscn")
+var ball_scene = load("res://scenes/ball.tscn")
 
 
 export (PackedScene) var Mob

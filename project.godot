@@ -13,8 +13,8 @@ config_version=4
 config/name="Pong with GDScript"
 config/description="A simple Pong game. This demo shows best practices
 for game development in Godot, including signals."
-run/main_scene="res://pong.tscn"
-config/icon="res://icon.png"
+run/main_scene="res://scenes/pong.tscn"
+config/icon="res://assets/icon.png"
 
 [display]
 
