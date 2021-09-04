@@ -1,13 +1,14 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://logic/paddle.gd" type="Script" id=1]
 [ext_resource path="res://paddle.png" type="Texture" id=2]
-[ext_resource path="res://Cube.gd" type="Script" id=3]
+[ext_resource path="res://CubeSpawn.gd" type="Script" id=3]
 [ext_resource path="res://ball.tscn" type="PackedScene" id=4]
 [ext_resource path="res://separator.png" type="Texture" id=6]
 [ext_resource path="res://logic/wall.gd" type="Script" id=7]
 [ext_resource path="res://logic/ceiling_floor.gd" type="Script" id=8]
 [ext_resource path="res://logic/pong.gd" type="Script" id=9]
+[ext_resource path="res://Cube.tscn" type="PackedScene" id=10]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 4, 16 )
@@ -31,10 +32,8 @@ extents = Vector2( 1, 1 )
 script = ExtResource( 9 )
 
 [node name="Background" type="ColorRect" parent="."]
-margin_left = -0.558884
-margin_top = 3.09737
-margin_right = 639.441
-margin_bottom = 403.097
+margin_right = 640.0
+margin_bottom = 400.0
 color = Color( 0.141176, 0.152941, 0.164706, 1 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -130,20 +129,23 @@ __meta__ = {
 
 [node name="Cube" type="Area2D" parent="."]
 position = Vector2( 200, 200 )
-script = ExtResource( 3 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Cube"]
 scale = Vector2( 4, 4 )
 shape = SubResource( 6 )
 
-[node name="ColorRect" type="ColorRect" parent="Cube/CollisionShape2D"]
-margin_left = -1.0
-margin_top = -1.0
-margin_right = 1.0
-margin_bottom = 1.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
+[node name="Path2D" type="Path2D" parent="."]
+curve = null
+script = ExtResource( 3 )
+Cube = ExtResource( 10 )
+
+[node name="PathFollow2D" type="PathFollow2D" parent="Path2D"]
+position = Vector2( 448, -48 )
+rotation = -3.14159
+
+[node name="CubeSpawnTimer" type="Timer" parent="."]
+wait_time = 3.0
+autostart = true
 
 [node name="BallTimer" type="Timer" parent="."]
 wait_time = 0.2
@@ -180,4 +182,6 @@ __meta__ = {
 [connection signal="area_entered" from="RightWall" to="RightWall" method="_on_wall_area_entered"]
 [connection signal="area_entered" from="Ceiling" to="Ceiling" method="_on_area_entered"]
 [connection signal="area_entered" from="Floor" to="Floor" method="_on_area_entered"]
+[connection signal="area_exited" from="Floor" to="Floor" method="_on_Floor_area_exited"]
+[connection signal="timeout" from="CubeSpawnTimer" to="Path2D" method="_on_CubeSpawnTimer_timeout"]
 [connection signal="timeout" from="BallTimer" to="." method="_on_Timer_timeout"]

@@ -1,6 +1,6 @@
 extends Area2D
 
-const DEFAULT_SPEED = 400
+const DEFAULT_SPEED = 300
 
 var _speed = DEFAULT_SPEED
 var direction = Vector2.LEFT
@@ -12,6 +12,9 @@ func _process(delta):
 	_speed += delta * 2
 	position += _speed * delta * direction
 
+func getDirection():
+	print(direction)
+	return direction
 
 func reset(for_left):
 	position = _screen_size / 2
