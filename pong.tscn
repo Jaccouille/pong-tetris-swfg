@@ -1,42 +1,40 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://logic/paddle.gd" type="Script" id=1]
 [ext_resource path="res://paddle.png" type="Texture" id=2]
 [ext_resource path="res://Cube.gd" type="Script" id=3]
-[ext_resource path="res://logic/ball.gd" type="Script" id=4]
-[ext_resource path="res://ball.png" type="Texture" id=5]
+[ext_resource path="res://ball.tscn" type="PackedScene" id=4]
 [ext_resource path="res://separator.png" type="Texture" id=6]
 [ext_resource path="res://logic/wall.gd" type="Script" id=7]
 [ext_resource path="res://logic/ceiling_floor.gd" type="Script" id=8]
+[ext_resource path="res://logic/pong.gd" type="Script" id=9]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 4, 16 )
 
 [sub_resource type="RectangleShape2D" id=2]
-extents = Vector2( 4, 4 )
-
-[sub_resource type="RectangleShape2D" id=3]
 extents = Vector2( 10, 200 )
 
-[sub_resource type="RectangleShape2D" id=4]
+[sub_resource type="RectangleShape2D" id=3]
 extents = Vector2( 320, 10 )
 
-[sub_resource type="RectangleShape2D" id=5]
+[sub_resource type="RectangleShape2D" id=4]
 extents = Vector2( 5, 20 )
 
-[sub_resource type="RectangleShape2D" id=6]
+[sub_resource type="RectangleShape2D" id=5]
 extents = Vector2( 10, 5 )
 
-[sub_resource type="RectangleShape2D" id=7]
+[sub_resource type="RectangleShape2D" id=6]
 extents = Vector2( 1, 1 )
 
 [node name="Pong" type="Node2D"]
+script = ExtResource( 9 )
 
 [node name="Background" type="ColorRect" parent="."]
-margin_left = 32.2845
-margin_top = 48.9349
-margin_right = 672.284
-margin_bottom = 448.935
+margin_left = -0.558884
+margin_top = 3.09737
+margin_right = 639.441
+margin_bottom = 403.097
 color = Color( 0.141176, 0.152941, 0.164706, 1 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -64,16 +62,6 @@ texture = ExtResource( 2 )
 [node name="Collision" type="CollisionShape2D" parent="Right"]
 shape = SubResource( 1 )
 
-[node name="Ball" type="Area2D" parent="."]
-position = Vector2( 320.5, 191.124 )
-script = ExtResource( 4 )
-
-[node name="Sprite" type="Sprite" parent="Ball"]
-texture = ExtResource( 5 )
-
-[node name="Collision" type="CollisionShape2D" parent="Ball"]
-shape = SubResource( 2 )
-
 [node name="Separator" type="Sprite" parent="."]
 position = Vector2( 320, 200 )
 texture = ExtResource( 6 )
@@ -83,21 +71,21 @@ position = Vector2( -10, 200 )
 script = ExtResource( 7 )
 
 [node name="Collision" type="CollisionShape2D" parent="LeftWall"]
-shape = SubResource( 3 )
+shape = SubResource( 2 )
 
 [node name="RightWall" type="Area2D" parent="."]
 position = Vector2( 650, 200 )
 script = ExtResource( 7 )
 
 [node name="Collision" type="CollisionShape2D" parent="RightWall"]
-shape = SubResource( 3 )
+shape = SubResource( 2 )
 
 [node name="Ceiling" type="Area2D" parent="."]
 position = Vector2( 320, -10 )
 script = ExtResource( 8 )
 
 [node name="Collision" type="CollisionShape2D" parent="Ceiling"]
-shape = SubResource( 4 )
+shape = SubResource( 3 )
 
 [node name="Floor" type="Area2D" parent="."]
 position = Vector2( 320, 410 )
@@ -105,7 +93,7 @@ script = ExtResource( 8 )
 _bounce_direction = -1
 
 [node name="Collision" type="CollisionShape2D" parent="Floor"]
-shape = SubResource( 4 )
+shape = SubResource( 3 )
 
 [node name="Camera2D" type="Camera2D" parent="."]
 offset = Vector2( 320, 200 )
@@ -116,11 +104,11 @@ visible = false
 position = Vector2( 200, 200 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Brick"]
-shape = SubResource( 5 )
+shape = SubResource( 4 )
 
 [node name="CollisionShape2D2" type="CollisionShape2D" parent="Brick"]
 position = Vector2( 5, 15 )
-shape = SubResource( 6 )
+shape = SubResource( 5 )
 
 [node name="ColorRect" type="ColorRect" parent="Brick"]
 margin_left = -5.0
@@ -146,7 +134,7 @@ script = ExtResource( 3 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Cube"]
 scale = Vector2( 4, 4 )
-shape = SubResource( 7 )
+shape = SubResource( 6 )
 
 [node name="ColorRect" type="ColorRect" parent="Cube/CollisionShape2D"]
 margin_left = -1.0
@@ -157,9 +145,39 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="BallTimer" type="Timer" parent="."]
+wait_time = 0.2
+
+[node name="Ball" parent="." instance=ExtResource( 4 )]
+
+[node name="ScoreLeft" type="Label" parent="."]
+margin_left = 256.24
+margin_top = 3.19508
+margin_right = 295.24
+margin_bottom = 17.1951
+size_flags_horizontal = 2
+text = "0"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ScoreRight" type="Label" parent="."]
+margin_left = 358.665
+margin_top = 3.7563
+margin_right = 397.665
+margin_bottom = 17.7563
+size_flags_horizontal = 2
+text = "0"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [connection signal="area_entered" from="Left" to="Left" method="_on_area_entered"]
 [connection signal="area_entered" from="Right" to="Right" method="_on_area_entered"]
 [connection signal="area_entered" from="LeftWall" to="LeftWall" method="_on_wall_area_entered"]
 [connection signal="area_entered" from="RightWall" to="RightWall" method="_on_wall_area_entered"]
 [connection signal="area_entered" from="Ceiling" to="Ceiling" method="_on_area_entered"]
 [connection signal="area_entered" from="Floor" to="Floor" method="_on_area_entered"]
+[connection signal="timeout" from="BallTimer" to="." method="_on_Timer_timeout"]

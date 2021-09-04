@@ -18,6 +18,7 @@ func _ready():
 		_ball_dir = -1
 
 
+
 func _process(delta):
 	# Move up and down based on input.
 	var input = Input.get_action_strength(_down) - Input.get_action_strength(_up)
@@ -25,6 +26,6 @@ func _process(delta):
 
 
 func _on_area_entered(area):
-	if area.name == "Ball":
+	if area.is_in_group("Balls"):
 		# Assign new direction.
 		area.direction = Vector2(_ball_dir, randf() * 2 - 1).normalized()
